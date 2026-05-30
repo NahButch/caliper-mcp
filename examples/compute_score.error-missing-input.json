@@ -1,0 +1,29 @@
+{
+  "comment": "Demonstrates the no-silent-defaults invariant: omitting a required input returns a typed error, never a substituted default. Captured verbatim from the server.",
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 5,
+    "method": "tools/call",
+    "params": {
+      "name": "compute_score",
+      "arguments": {
+        "id": "ckd-epi-2021",
+        "inputs": {
+          "age": { "value": 50, "unit": "years" },
+          "sex": "female"
+        }
+      }
+    }
+  },
+  "response": {
+    "jsonrpc": "2.0",
+    "id": 5,
+    "result": {
+      "isError": true,
+      "structuredContent": {
+        "error": "MissingRequiredInput",
+        "field": "creatinine"
+      }
+    }
+  }
+}

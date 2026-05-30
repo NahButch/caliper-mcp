@@ -1,0 +1,30 @@
+{
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 4,
+    "method": "tools/call",
+    "params": {
+      "name": "convert_units",
+      "arguments": {
+        "analyte": "creatinine",
+        "value": 150,
+        "from": "umol/L",
+        "to": "mg/dL"
+      }
+    }
+  },
+  "response": {
+    "jsonrpc": "2.0",
+    "id": 4,
+    "result": {
+      "isError": false,
+      "structuredContent": {
+        "analyte": "creatinine",
+        "input": { "value": 150.0, "unit": "umol/L" },
+        "output": { "value": 1.6964487672472293, "unit": "mg/dL" },
+        "factor": 0.011309658448314861,
+        "basis": "creatinine molar mass 113.12 g/mol; 1 mg/dL = 88.42 µmol/L"
+      }
+    }
+  }
+}

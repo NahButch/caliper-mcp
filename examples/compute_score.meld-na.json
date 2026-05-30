@@ -1,0 +1,36 @@
+{
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 3,
+    "method": "tools/call",
+    "params": {
+      "name": "compute_score",
+      "arguments": {
+        "id": "meld-na",
+        "inputs": {
+          "creatinine": { "value": 1.9, "unit": "mg/dL" },
+          "bilirubin": { "value": 4.0, "unit": "mg/dL" },
+          "inr": 1.5,
+          "sodium": { "value": 130, "unit": "mmol/L" }
+        }
+      }
+    }
+  },
+  "response": {
+    "jsonrpc": "2.0",
+    "id": 3,
+    "result": {
+      "isError": false,
+      "structuredContent": {
+        "id": "meld-na",
+        "version": "OPTN-2016",
+        "value": 26.0,
+        "unit": "points",
+        "interpretation": "MELD-Na 26: elevated band (descriptive only).",
+        "applied_rules": ["MELD(i) > 11: sodium correction applied"],
+        "citation": "OPTN Policy 9 (MELD-Na, effective 2016-01-11); Kim WR, et al. Hyponatremia and mortality among patients on the liver-transplant waiting list. N Engl J Med. 2008;359(10):1018-1026.",
+        "disclaimer": "Calculation only. Not medical advice; not a medical device."
+      }
+    }
+  }
+}
