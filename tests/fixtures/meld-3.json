@@ -1,0 +1,13 @@
+{
+  "inputs": {
+    "sex": "female",
+    "creatinine": { "value": 1.9, "unit": "mg/dL" },
+    "bilirubin": { "value": 4.0, "unit": "mg/dL" },
+    "inr": 1.5,
+    "sodium": { "value": 130, "unit": "mmol/L" },
+    "albumin": { "value": 3.0, "unit": "g/dL" }
+  },
+  "expected": 28,
+  "tolerance": 0,
+  "source": "Kim et al. (Gastroenterology 2021), MELD 3.0. 1.33 + 4.56*ln4 + 0.82*7 - 0.24*7*ln4 + 9.09*ln1.5 + 11.14*ln1.9 + 1.85*0.5 - 1.83*0.5*ln1.9 + 6 = 28.24 -> 28."
+}

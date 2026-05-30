@@ -1,0 +1,16 @@
+{
+  "inputs": {
+    "pao2": { "value": 75, "unit": "mmHg" },
+    "fio2": { "value": 0.6, "unit": "fraction" },
+    "respiratory_support": true,
+    "platelets": { "value": 80, "unit": "10^9/L" },
+    "bilirubin": { "value": 3.0, "unit": "mg/dL" },
+    "map": { "value": 65, "unit": "mmHg" },
+    "vasopressor": "none",
+    "gcs": 13,
+    "creatinine": { "value": 2.5, "unit": "mg/dL" }
+  },
+  "expected": 11,
+  "tolerance": 0,
+  "source": "Vincent et al. (Intensive Care Med 1996). Resp P/F=125 with support (3) + platelets 50-99 (2) + bilirubin 2.0-5.9 (2) + MAP<70 (1) + GCS 13-14 (1) + creatinine 2.0-3.4 (2) = 11 (cf. MDCalc SOFA)."
+}

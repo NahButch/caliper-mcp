@@ -1,0 +1,12 @@
+{
+  "inputs": {
+    "bilirubin": { "value": 2.5, "unit": "mg/dL" },
+    "albumin": { "value": 3.0, "unit": "g/dL" },
+    "inr": 1.8,
+    "ascites": "mild",
+    "encephalopathy": "none"
+  },
+  "expected": 9,
+  "tolerance": 0,
+  "source": "Pugh et al. (Br J Surg 1973). Bilirubin 2-3 (2) + albumin 2.8-3.5 (2) + INR 1.7-2.3 (2) + mild ascites (2) + no encephalopathy (1) = 9, Class B (cf. MDCalc Child-Pugh)."
+}

@@ -1,0 +1,11 @@
+{
+  "inputs": {
+    "age": { "value": 55, "unit": "years" },
+    "ast": { "value": 60, "unit": "U/L" },
+    "alt": { "value": 40, "unit": "U/L" },
+    "platelets": { "value": 120, "unit": "10^9/L" }
+  },
+  "expected": 4.348,
+  "tolerance": 0.01,
+  "source": "Sterling et al. (Hepatology 2006). (55*60)/(120*sqrt(40)) = 3300/758.95 = 4.35 (cf. MDCalc Fibrosis-4 Index)."
+}

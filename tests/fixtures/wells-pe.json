@@ -1,0 +1,14 @@
+{
+  "inputs": {
+    "clinical_dvt": true,
+    "pe_most_likely": true,
+    "heart_rate": { "value": 110, "unit": "bpm" },
+    "immobilization_surgery": false,
+    "prior_dvt_pe": false,
+    "hemoptysis": false,
+    "malignancy": false
+  },
+  "expected": 7.5,
+  "tolerance": 0,
+  "source": "Wells et al. (Thromb Haemost 2000). DVT signs (3) + PE most likely (3) + HR>100 (1.5) = 7.5 (cf. MDCalc Wells' Criteria for PE)."
+}

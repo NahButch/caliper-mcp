@@ -1,0 +1,10 @@
+{
+  "inputs": {
+    "respiratory_rate": { "value": 24, "unit": "breaths/min" },
+    "altered_mentation": true,
+    "systolic_bp": { "value": 95, "unit": "mmHg" }
+  },
+  "expected": 3,
+  "tolerance": 0,
+  "source": "Seymour et al. (JAMA 2016, Sepsis-3). RR>=22 (1) + altered mentation (1) + SBP<=100 (1) = 3 (cf. MDCalc qSOFA)."
+}

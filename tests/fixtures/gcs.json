@@ -1,0 +1,6 @@
+{
+  "inputs": { "eye": 3, "verbal": 4, "motor": 5 },
+  "expected": 12,
+  "tolerance": 0,
+  "source": "Teasdale & Jennett (Lancet 1974); E3+V4+M5 = 12 by definition (cf. MDCalc Glasgow Coma Scale)."
+}

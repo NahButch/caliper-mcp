@@ -1,0 +1,11 @@
+{
+  "inputs": {
+    "creatinine": { "value": 1.9, "unit": "mg/dL" },
+    "bilirubin": { "value": 4.0, "unit": "mg/dL" },
+    "inr": 1.5,
+    "sodium": { "value": 130, "unit": "mmol/L" }
+  },
+  "expected": 26,
+  "tolerance": 0,
+  "source": "OPTN MELD-Na (2016). MELD(i)=round(10*(0.957*ln1.9+0.378*ln4.0+1.120*ln1.5+0.643))=22; >11 so MELD-Na=22+1.32*(137-130)-0.033*22*(137-130)=26.16 -> 26."
+}

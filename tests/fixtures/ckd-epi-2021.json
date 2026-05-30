@@ -1,0 +1,10 @@
+{
+  "inputs": {
+    "creatinine": { "value": 0.9, "unit": "mg/dL" },
+    "age": { "value": 50, "unit": "years" },
+    "sex": "female"
+  },
+  "expected": 77.88,
+  "tolerance": 0.1,
+  "source": "Inker et al. (NEJM 2021), 2021 race-free CKD-EPI creatinine equation. 50-year-old female, Scr 0.9 mg/dL: 142 * (0.9/0.7)^-1.200 * 0.9938^50 * 1.012 = 77.9 mL/min/1.73m^2 (matches the NKF eGFR calculator)."
+}

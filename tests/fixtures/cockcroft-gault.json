@@ -1,0 +1,11 @@
+{
+  "inputs": {
+    "age": { "value": 70, "unit": "years" },
+    "weight": { "value": 70, "unit": "kg" },
+    "creatinine": { "value": 1.0, "unit": "mg/dL" },
+    "sex": "male"
+  },
+  "expected": 68.06,
+  "tolerance": 0.05,
+  "source": "Cockcroft & Gault (Nephron 1976). Male, 70 y, 70 kg, Scr 1.0 mg/dL: (140-70)*70/(72*1.0) = 4900/72 = 68.06 mL/min (cf. MDCalc Creatinine Clearance)."
+}

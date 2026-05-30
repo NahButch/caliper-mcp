@@ -1,0 +1,16 @@
+{
+  "inputs": {
+    "hypertension": true,
+    "abnormal_renal": false,
+    "abnormal_liver": false,
+    "stroke": true,
+    "bleeding": false,
+    "labile_inr": true,
+    "age": { "value": 70, "unit": "years" },
+    "drugs": true,
+    "alcohol": false
+  },
+  "expected": 5,
+  "tolerance": 0,
+  "source": "Pisters et al. (Chest 2010). HTN (1) + stroke (1) + labile INR (1) + age>65 (1) + drugs (1) = 5 (cf. MDCalc HAS-BLED)."
+}

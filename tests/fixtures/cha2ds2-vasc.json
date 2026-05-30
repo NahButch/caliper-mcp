@@ -1,0 +1,14 @@
+{
+  "inputs": {
+    "chf": false,
+    "hypertension": true,
+    "age": { "value": 75, "unit": "years" },
+    "diabetes": true,
+    "stroke_tia": false,
+    "vascular_disease": false,
+    "sex": "female"
+  },
+  "expected": 5,
+  "tolerance": 0,
+  "source": "Lip et al. (Chest 2010). 75-year-old woman with hypertension and diabetes: age>=75 (2) + female (1) + HTN (1) + DM (1) = 5 (cf. MDCalc CHA2DS2-VASc)."
+}

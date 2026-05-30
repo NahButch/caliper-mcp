@@ -1,0 +1,15 @@
+{
+  "inputs": {
+    "respiratory_rate": { "value": 22, "unit": "breaths/min" },
+    "spo2": { "value": 93, "unit": "%" },
+    "spo2_scale": "1",
+    "supplemental_oxygen": true,
+    "systolic_bp": { "value": 105, "unit": "mmHg" },
+    "pulse": { "value": 110, "unit": "bpm" },
+    "consciousness": "alert",
+    "temperature": { "value": 38.5, "unit": "°C" }
+  },
+  "expected": 9,
+  "tolerance": 0,
+  "source": "Royal College of Physicians NEWS2 (2017), Scale 1. RR 21-24 (2) + SpO2 92-93 (2) + supplemental O2 (2) + SBP 101-110 (1) + pulse 91-110 (1) + alert (0) + temp 38.1-39.0 (1) = 9."
+}
