@@ -1,0 +1,6 @@
+<svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Caliper logo">
+  <title>Caliper</title>
+  <rect width="140" height="140" rx="28" fill="#11201c"/>
+  <path d="M104 42 A34 34 0 1 0 104 98" fill="none" stroke="#2f6fed" stroke-width="13" stroke-linecap="round"/>
+  <circle cx="51" cy="70" r="9" fill="#e0a32e"/>
+</svg>
