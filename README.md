@@ -58,7 +58,9 @@ lab-dump / PDF ingestion and anything resembling a recommendation are out of sco
 | `child-pugh` | Child-Pugh | 1973 | hepatology |
 | `fib-4` | FIB-4 index | Sterling-2006 | hepatology |
 
-See [docs/SCHEMA.md](docs/SCHEMA.md) for the full tool and input contract.
+See [docs/SCHEMA.md](docs/SCHEMA.md) for the full tool and input contract. Every score's
+coefficients and thresholds have been audited against their primary sources — see
+[docs/COEFFICIENT_AUDIT.md](docs/COEFFICIENT_AUDIT.md) (14/14 clean).
 
 ## Tools
 
