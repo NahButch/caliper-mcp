@@ -193,5 +193,31 @@ pub fn tool_defs() -> Vec<Value> {
                 "additionalProperties": true
             }
         }),
+        json!({
+            "name": "extract_inputs",
+            "description": "Scan free text / a lab dump into candidate unit-typed inputs with provenance. NEVER assumes a unit: values without a recognized unit are returned under 'needs_unit' (with a suggested unit to confirm) and are NOT placed in 'inputs'. Advisory only; does not compute and does not diagnose.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "text": { "type": "string", "description": "Free-text clinical note or lab dump." }
+                },
+                "required": ["text"],
+                "additionalProperties": false
+            }
+        }),
+        json!({
+            "name": "prepare_score",
+            "description": "Assemble a score's inputs from free text and/or an explicit inputs object, then report readiness against the score's contract (satisfied / missing_required / needs-unit). Explicit inputs override extracted ones. Deliberately does NOT compute — call compute_score once ready.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "string" },
+                    "text": { "type": "string", "description": "Optional free text to extract from." },
+                    "inputs": { "type": "object", "description": "Optional explicit inputs; override extracted values." }
+                },
+                "required": ["id"],
+                "additionalProperties": false
+            }
+        }),
     ]
 }

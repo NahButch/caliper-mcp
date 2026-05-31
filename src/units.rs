@@ -346,6 +346,21 @@ pub fn canonical_unit(analyte: &str) -> Option<&'static str> {
     find_analyte(analyte).map(|a| a.canonical)
 }
 
+/// Whether `unit` is a recognized unit for `analyte`, without converting. Used by the
+/// ingestion scanner to tell "found a known unit" from "found an unrecognized unit" — it
+/// never fabricates or assumes a unit on the caller's behalf.
+pub fn is_known_unit(analyte: &str, unit: &str) -> bool {
+    if analyte.eq_ignore_ascii_case("temperature") {
+        return matches!(
+            normalize(unit).as_str(),
+            "°c" | "c" | "celsius" | "degc" | "°f" | "f" | "fahrenheit" | "degf" | "k" | "kelvin"
+        );
+    }
+    find_analyte(analyte)
+        .map(|def| unit_factor(def, unit).is_some())
+        .unwrap_or(false)
+}
+
 fn to_celsius(value: f64, unit: &str, field: &str) -> Result<f64, CalcError> {
     match normalize(unit).as_str() {
         "°c" | "c" | "celsius" | "degc" => Ok(value),

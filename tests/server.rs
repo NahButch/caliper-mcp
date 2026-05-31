@@ -26,13 +26,13 @@ fn initialized_notification_has_no_response() {
 }
 
 #[test]
-fn tools_list_exposes_seven_tools() {
+fn tools_list_exposes_all_tools() {
     let resp = handle_message(&json!({
         "jsonrpc": "2.0", "id": 2, "method": "tools/list"
     }))
     .unwrap();
     let tools = resp["result"]["tools"].as_array().unwrap();
-    assert_eq!(tools.len(), 7);
+    assert_eq!(tools.len(), 9);
     let names: Vec<&str> = tools.iter().map(|t| t["name"].as_str().unwrap()).collect();
     for expected in [
         "list_scores",
@@ -42,6 +42,8 @@ fn tools_list_exposes_seven_tools() {
         "solve_for",
         "score_series",
         "suggest_scores",
+        "extract_inputs",
+        "prepare_score",
     ] {
         assert!(names.contains(&expected), "missing tool {expected}");
     }

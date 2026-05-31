@@ -21,6 +21,7 @@
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
 
+pub mod ingest;
 pub mod mcp;
 pub mod registry;
 pub mod scores;

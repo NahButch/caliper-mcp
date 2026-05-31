@@ -1,7 +1,7 @@
 //! The seven MCP tools, all derived from the registry. Pure functions over `serde_json`:
 //! no I/O, no state. The JSON-RPC layer ([`crate::mcp`]) wraps these.
 
-use crate::{registry, units, CalcError, InputKind, InputSpec, Inputs};
+use crate::{ingest, registry, units, CalcError, InputKind, InputSpec, Inputs};
 use serde_json::{json, Map, Value};
 
 /// The outcome of a tool call: a JSON payload plus whether it represents an error.
@@ -43,6 +43,8 @@ pub const TOOL_NAMES: &[&str] = &[
     "solve_for",
     "score_series",
     "suggest_scores",
+    "extract_inputs",
+    "prepare_score",
 ];
 
 /// Dispatch a tool call by name.
@@ -55,6 +57,8 @@ pub fn call_tool(name: &str, args: &Value) -> ToolOutcome {
         "solve_for" => solve_for(args),
         "score_series" => score_series(args),
         "suggest_scores" => suggest_scores(args),
+        "extract_inputs" => extract_inputs(args),
+        "prepare_score" => prepare_score(args),
         other => ToolOutcome::err(json!({
             "error": "UnknownTool",
             "message": format!("no such tool '{other}'"),
@@ -169,6 +173,135 @@ fn compute_score(args: &Value) -> ToolOutcome {
         Ok(result) => ToolOutcome::ok(serde_json::to_value(result).unwrap()),
         Err(e) => ToolOutcome::calc(e),
     }
+}
+
+// ---- extract_inputs --------------------------------------------------------
+
+fn extract_inputs(args: &Value) -> ToolOutcome {
+    let text = match str_arg(args, "text") {
+        Some(t) => t,
+        None => return ToolOutcome::invalid("missing required field 'text' (string)"),
+    };
+    ToolOutcome::ok(ingest::extract_inputs(text))
+}
+
+// ---- prepare_score ---------------------------------------------------------
+
+/// Assemble inputs for a score from free text and/or an explicit inputs object, then report
+/// readiness against the score's contract. Deliberately does NOT compute: it leaves the
+/// compute_score call (and any unit confirmation) to the caller, keeping a human/agent in the
+/// loop and the calculation-only invariant intact.
+fn prepare_score(args: &Value) -> ToolOutcome {
+    let id = match str_arg(args, "id") {
+        Some(id) => id,
+        None => return ToolOutcome::invalid("missing required field 'id'"),
+    };
+    let d = match registry::find(id) {
+        Some(d) => d,
+        None => return unknown_score(id),
+    };
+
+    // 1. Extract from text (if provided).
+    let extraction = str_arg(args, "text").map(ingest::extract_inputs);
+
+    // 2. Merge: start with extracted ready inputs, then let explicit inputs override.
+    let mut assembled: Map<String, Value> = extraction
+        .as_ref()
+        .and_then(|e| e.get("inputs"))
+        .and_then(Value::as_object)
+        .cloned()
+        .unwrap_or_default();
+    if let Some(explicit) = args.get("inputs").and_then(Value::as_object) {
+        for (k, v) in explicit {
+            assembled.insert(k.clone(), v.clone());
+        }
+    }
+
+    // 3. Restrict assembled inputs to this score's contract; collect off-contract extras.
+    let contract_fields: Vec<&str> = d.inputs.iter().map(|s| s.field).collect();
+    let mut relevant = Map::new();
+    let mut extras: Vec<String> = Vec::new();
+    for (k, v) in &assembled {
+        if contract_fields.contains(&k.as_str()) {
+            relevant.insert(k.clone(), v.clone());
+        } else {
+            extras.push(k.clone());
+        }
+    }
+    extras.sort();
+
+    // 4. Classify each required field.
+    let needs_unit_arr = extraction
+        .as_ref()
+        .and_then(|e| e.get("needs_unit"))
+        .and_then(Value::as_array)
+        .cloned()
+        .unwrap_or_default();
+    let unrecognized_arr = extraction
+        .as_ref()
+        .and_then(|e| e.get("unrecognized_units"))
+        .and_then(Value::as_array)
+        .cloned()
+        .unwrap_or_default();
+    let field_in = |list: &[Value], field: &str| -> bool {
+        list.iter()
+            .any(|v| v.get("field").and_then(Value::as_str) == Some(field))
+    };
+
+    let mut satisfied: Vec<&str> = Vec::new();
+    let mut missing_required: Vec<Value> = Vec::new();
+    for spec in d.inputs {
+        if !spec.required {
+            continue;
+        }
+        if relevant.contains_key(spec.field) {
+            satisfied.push(spec.field);
+        } else if field_in(&needs_unit_arr, spec.field) {
+            missing_required.push(json!({
+                "field": spec.field,
+                "reason": "value found in text but its unit was not stated; confirm a unit",
+            }));
+        } else if field_in(&unrecognized_arr, spec.field) {
+            missing_required.push(json!({
+                "field": spec.field,
+                "reason": "value found with an unrecognized unit; restate in an allowed unit",
+                "allowed_units": spec.allowed_units,
+            }));
+        } else {
+            missing_required.push(json!({
+                "field": spec.field,
+                "reason": "not found",
+                "kind": input_kind_json(&spec.kind),
+                "allowed_units": spec.allowed_units,
+            }));
+        }
+    }
+
+    let ready = missing_required.is_empty();
+    let next = if ready {
+        "All required inputs present. Confirm them, then call compute_score with id + inputs."
+    } else {
+        "Not ready: resolve missing_required (supply values and/or confirm units), then call \
+compute_score. This tool does not compute and does not diagnose."
+    };
+
+    let mut out = json!({
+        "id": d.id,
+        "name": d.name,
+        "version": d.version,
+        "ready": ready,
+        "inputs": Value::Object(relevant),
+        "satisfied": satisfied,
+        "missing_required": missing_required,
+        "off_contract_extracted": extras,
+        "next": next,
+        "disclaimer": crate::DISCLAIMER,
+    });
+    // Echo the raw extraction (provenance, ambiguity) when text was supplied, for auditability.
+    if let Some(e) = extraction {
+        out["extraction"] = e;
+    }
+    ToolOutcome::ok(out)
 }
 
 // ---- convert_units ---------------------------------------------------------
