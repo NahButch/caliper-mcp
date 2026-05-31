@@ -190,6 +190,63 @@ const ANALYTES: &[AnalyteDef] = &[
         }],
     },
     AnalyteDef {
+        name: "hemoglobin",
+        canonical: "g/dL",
+        basis: "1 g/dL = 10 g/L; 1 mmol/L Hb ≈ 1.611 g/dL",
+        units: &[
+            UnitDef {
+                aliases: &["g/dl", "gm/dl", "g/100ml"],
+                factor: 1.0,
+            },
+            UnitDef {
+                aliases: &["g/l"],
+                factor: 0.1,
+            },
+            UnitDef {
+                aliases: &["mmol/l"],
+                factor: 1.611,
+            },
+        ],
+    },
+    AnalyteDef {
+        name: "wbc",
+        canonical: "10^9/L",
+        basis: "white cell count; 10^9/L = 10^3/µL (= K/µL)",
+        units: &[
+            UnitDef {
+                aliases: &["10^9/l", "x10^9/l", "*10^9/l", "10e9/l"],
+                factor: 1.0,
+            },
+            UnitDef {
+                aliases: &["10^3/ul", "10^3/µl", "k/ul", "k/µl", "thousand/ul", "/nl"],
+                factor: 1.0,
+            },
+            UnitDef {
+                aliases: &["/ul", "cells/ul", "/µl"],
+                factor: 1.0e-3,
+            },
+            UnitDef {
+                aliases: &["/l", "cells/l"],
+                factor: 1.0e-9,
+            },
+        ],
+    },
+    AnalyteDef {
+        name: "paco2",
+        canonical: "mmHg",
+        basis: "arterial CO2 tension; 1 kPa = 7.50062 mmHg",
+        units: &[
+            UnitDef {
+                aliases: &["mmhg", "torr"],
+                factor: 1.0,
+            },
+            UnitDef {
+                aliases: &["kpa"],
+                factor: 7.50062,
+            },
+        ],
+    },
+    AnalyteDef {
         name: "pao2",
         canonical: "mmHg",
         basis: "1 kPa = 7.50062 mmHg",
