@@ -1,0 +1,11 @@
+{
+  "inputs": {
+    "confusion": true,
+    "respiratory_rate": { "value": 32, "unit": "breaths/min" },
+    "systolic_bp": { "value": 85, "unit": "mmHg" },
+    "age": { "value": 70, "unit": "years" }
+  },
+  "expected": 4,
+  "tolerance": 0,
+  "source": "Lim et al. (Thorax 2003), CRB-65 variant. Confusion (1) + RR>=30 (1) + SBP<90 (1) + age>=65 (1) = 4 (cf. MDCalc CRB-65)."
+}

@@ -1,0 +1,11 @@
+{
+  "inputs": {
+    "temperature": { "value": 38.5, "unit": "°C" },
+    "heart_rate": { "value": 110, "unit": "bpm" },
+    "respiratory_rate": { "value": 24, "unit": "breaths/min" },
+    "wbc": { "value": 14, "unit": "10^9/L" }
+  },
+  "expected": 4,
+  "tolerance": 0,
+  "source": "Bone et al. (ACCP/SCCM, Chest 1992). Temp >38 (1) + HR >90 (1) + RR >20 (1) + WBC >12 (1) = 4/4 criteria (cf. MDCalc SIRS)."
+}

@@ -1,0 +1,12 @@
+{
+  "inputs": {
+    "systolic_bp": { "value": 85, "unit": "mmHg" },
+    "heart_rate": { "value": 115, "unit": "bpm" },
+    "respiratory_rate": { "value": 22, "unit": "breaths/min" },
+    "temperature": { "value": 38.6, "unit": "°C" },
+    "avpu": "voice"
+  },
+  "expected": 8,
+  "tolerance": 0,
+  "source": "Subbe et al. (QJM 2001). SBP 81-100 (1) + HR 111-129 (2) + RR 21-29 (2) + temp >=38.5 (2) + AVPU voice (1) = 8 (cf. MDCalc MEWS)."
+}

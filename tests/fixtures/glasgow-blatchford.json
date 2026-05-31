@@ -1,0 +1,16 @@
+{
+  "inputs": {
+    "urea": { "value": 8.0, "unit": "mmol/L" },
+    "hemoglobin": { "value": 11.5, "unit": "g/dL" },
+    "sex": "male",
+    "systolic_bp": { "value": 105, "unit": "mmHg" },
+    "pulse": { "value": 110, "unit": "bpm" },
+    "melena": true,
+    "syncope": false,
+    "hepatic_disease": false,
+    "cardiac_failure": false
+  },
+  "expected": 9,
+  "tolerance": 0,
+  "source": "Blatchford et al. (Lancet 2000). Male: urea 8.0-9.9 (3) + Hgb 10.0-11.9 (3) + SBP 100-109 (1) + pulse>=100 (1) + melena (1) = 9 (cf. MDCalc Glasgow-Blatchford Bleeding Score)."
+}

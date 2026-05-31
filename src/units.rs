@@ -462,4 +462,36 @@ mod tests {
     fn fio2_percent_to_fraction() {
         approx(to_canonical("fio2", 40.0, "%", "fio2").unwrap(), 0.40);
     }
+
+    #[test]
+    fn hemoglobin_gl_to_gdl() {
+        approx(
+            to_canonical("hemoglobin", 130.0, "g/L", "hemoglobin").unwrap(),
+            13.0,
+        );
+    }
+
+    #[test]
+    fn wbc_unit_aliases() {
+        approx(to_canonical("wbc", 12.0, "10^9/L", "wbc").unwrap(), 12.0);
+        approx(to_canonical("wbc", 12.0, "10^3/uL", "wbc").unwrap(), 12.0);
+    }
+
+    #[test]
+    fn paco2_kpa_to_mmhg() {
+        approx(
+            to_canonical("paco2", 4.0, "kPa", "paco2").unwrap(),
+            30.00248,
+        );
+    }
+
+    #[test]
+    fn is_known_unit_discriminates() {
+        assert!(is_known_unit("hemoglobin", "g/dL"));
+        assert!(is_known_unit("wbc", "10^9/L"));
+        assert!(is_known_unit("creatinine", "umol/L"));
+        assert!(is_known_unit("temperature", "°F"));
+        assert!(!is_known_unit("creatinine", "furlongs"));
+        assert!(!is_known_unit("nonexistent-analyte", "g/dL"));
+    }
 }

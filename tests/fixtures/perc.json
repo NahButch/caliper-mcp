@@ -1,0 +1,15 @@
+{
+  "inputs": {
+    "age": { "value": 40, "unit": "years" },
+    "heart_rate": { "value": 80, "unit": "bpm" },
+    "spo2": { "value": 98, "unit": "%" },
+    "unilateral_leg_swelling": false,
+    "hemoptysis": false,
+    "recent_surgery_trauma": false,
+    "prior_vte": false,
+    "hormone_use": false
+  },
+  "expected": 0,
+  "tolerance": 0,
+  "source": "Kline et al. (J Thromb Haemost 2004). Age<50, HR<100, SpO2>=95%, and all five history criteria negative = 0 positive criteria (PERC-negative) (cf. MDCalc PERC Rule)."
+}

@@ -1,0 +1,18 @@
+{
+  "inputs": {
+    "active_cancer": true,
+    "previous_vte": false,
+    "reduced_mobility": true,
+    "thrombophilia": false,
+    "recent_trauma_surgery": false,
+    "age": { "value": 75, "unit": "years" },
+    "heart_resp_failure": false,
+    "mi_or_stroke": false,
+    "infection_rheum": false,
+    "obesity": false,
+    "hormonal_treatment": false
+  },
+  "expected": 7,
+  "tolerance": 0,
+  "source": "Barbar et al. (J Thromb Haemost 2010). Active cancer (3) + reduced mobility (3) + age>=70 (1) = 7, high risk (>=4) (cf. MDCalc Padua Prediction Score)."
+}

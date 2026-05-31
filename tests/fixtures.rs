@@ -61,13 +61,13 @@ fn all_fixtures_match() {
     }
 
     assert!(
-        count >= registry::all().len(),
-        "expected at least one fixture per score ({} scores), ran {count}",
-        registry::all().len()
-    );
-    assert!(
         failures.is_empty(),
         "fixture mismatches:\n{}",
         failures.join("\n")
+    );
+    assert!(
+        count >= registry::all().len(),
+        "expected at least one fixture per score ({} scores), ran {count}",
+        registry::all().len()
     );
 }

@@ -4,6 +4,31 @@ All notable changes to Caliper are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-05-31
+
+### Added
+- **Ingestion layer (calculation-only, unit-safe).** Two new tools:
+  - `extract_inputs(text)` — a deterministic, dependency-free scanner that turns free text into
+    candidate unit-typed inputs with provenance (the exact source substring per value). It
+    **never fabricates a unit**: a value without a recognized unit goes to `needs_unit` (with a
+    suggested unit to confirm) and is excluded from `inputs`; an unrecognized unit goes to
+    `unrecognized_units`. Stateless, no logging of the text, no network.
+  - `prepare_score(id, text?, inputs?)` — assembles inputs (explicit values override extracted
+    ones) and reports readiness against the score contract (`satisfied` / `missing_required`).
+    Deliberately does **not** compute.
+- **Six new scores** (registry now 20 across 8 domains): `crb-65` (Lim 2003), `perc`
+  (Kline 2004), `mews` (Subbe 2001), `sirs` (ACCP/SCCM 1992), `glasgow-blatchford`
+  (Blatchford 2000), `padua-vte` (Barbar 2010) — each with a source-cited fixture.
+- New analytes in the unit table: hemoglobin, white cell count (WBC), PaCO₂.
+- `units::is_known_unit` helper (recognize a unit without converting).
+- Cargo publish metadata: `rust-version`, `homepage`, `documentation`, `exclude`.
+
+### Verified
+- Coefficient audit extended to the 6 new scores ([`docs/COEFFICIENT_AUDIT.md`](docs/COEFFICIENT_AUDIT.md)):
+  20/20 clean. Glasgow-Blatchford and Padua verified live against authoritative tables;
+  CRB-65/PERC/SIRS against primary definitions + MDCalc; MEWS against the original Subbe 2001
+  grid (the doc records the variant caveat honestly — the QJM table is paywalled).
+
 ## [0.1.0] - 2026-05-30
 
 Initial release.

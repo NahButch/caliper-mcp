@@ -1,13 +1,17 @@
 [package]
 name = "caliper-mcp"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
+rust-version = "1.74"
 license = "Apache-2.0"
 description = "Caliper: a deterministic, version-pinned, unit-typed clinical calculation MCP server (stdio)."
 repository = "https://github.com/NahButch/caliper-mcp"
+homepage = "https://github.com/NahButch/caliper-mcp"
+documentation = "https://github.com/NahButch/caliper-mcp/blob/main/docs/SCHEMA.md"
 readme = "README.md"
 keywords = ["mcp", "clinical", "calculator", "medical", "stdio"]
 categories = ["science", "command-line-utilities"]
+exclude = ["/.github", "/files"]
 
 [lib]
 name = "caliper"

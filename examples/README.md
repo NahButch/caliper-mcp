@@ -7,6 +7,8 @@ Each file is a real JSON-RPC request paired with the response Caliper produced o
 | [`compute_score.meld-na.json`](compute_score.meld-na.json) | a successful `compute_score`: MELD-Na with the sodium-correction rule recorded in `applied_rules` |
 | [`convert_units.creatinine.json`](convert_units.creatinine.json) | analyte-aware unit conversion (150 µmol/L creatinine → mg/dL) with the molar-mass basis |
 | [`compute_score.error-missing-input.json`](compute_score.error-missing-input.json) | the no-silent-defaults invariant: a missing input returns a typed `MissingRequiredInput` |
+| [`extract_inputs.lab-note.json`](extract_inputs.lab-note.json) | ingestion that never assumes a unit: `Na 130` (no unit) lands in `needs_unit`, not `inputs`; `no diabetes` resolves to `false` |
+| [`prepare_score.meld-na.json`](prepare_score.meld-na.json) | assembling a score's inputs from text and reporting readiness — without computing |
 
 To reproduce, pipe an `initialize` call plus the `request` objects (one JSON object per line)
 into the server:
