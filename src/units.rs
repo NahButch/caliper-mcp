@@ -139,6 +139,39 @@ const ANALYTES: &[AnalyteDef] = &[
         ],
     },
     AnalyteDef {
+        name: "height",
+        canonical: "cm",
+        basis: "1 m = 100 cm; 1 in = 2.54 cm; 1 ft = 30.48 cm",
+        units: &[
+            UnitDef {
+                aliases: &[
+                    "cm",
+                    "centimeter",
+                    "centimetre",
+                    "centimeters",
+                    "centimetres",
+                ],
+                factor: 1.0,
+            },
+            UnitDef {
+                aliases: &["m", "meter", "metre", "meters", "metres"],
+                factor: 100.0,
+            },
+            UnitDef {
+                aliases: &["mm", "millimeter", "millimetre"],
+                factor: 0.1,
+            },
+            UnitDef {
+                aliases: &["in", "inch", "inches", "\""],
+                factor: 2.54,
+            },
+            UnitDef {
+                aliases: &["ft", "foot", "feet"],
+                factor: 30.48,
+            },
+        ],
+    },
+    AnalyteDef {
         name: "age",
         canonical: "years",
         basis: "12 months = 1 year",
@@ -540,6 +573,16 @@ mod tests {
             to_canonical("paco2", 4.0, "kPa", "paco2").unwrap(),
             30.00248,
         );
+    }
+
+    #[test]
+    fn height_conversions() {
+        approx(to_canonical("height", 1.5, "m", "height").unwrap(), 150.0);
+        approx(
+            to_canonical("height", 100.0, "cm", "height").unwrap(),
+            100.0,
+        );
+        approx(to_canonical("height", 10.0, "in", "height").unwrap(), 25.4);
     }
 
     #[test]

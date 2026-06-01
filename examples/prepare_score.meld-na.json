@@ -1,0 +1,114 @@
+{
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 3,
+    "method": "tools/call",
+    "params": {
+      "name": "prepare_score",
+      "arguments": {
+        "id": "meld-na",
+        "text": "Creatinine 1.9 mg/dL, bilirubin 4.0 mg/dL, INR 1.5. Na 130.",
+        "inputs": {
+          "sodium": {
+            "value": 130,
+            "unit": "mmol/L"
+          }
+        }
+      }
+    }
+  },
+  "response": {
+    "id": 3,
+    "jsonrpc": "2.0",
+    "result": {
+      "content": [
+        {
+          "text": "{\n  \"disclaimer\": \"Calculation only. Not medical advice; not a medical device.\",\n  \"extraction\": {\n    \"ambiguous\": [],\n    \"disclaimer\": \"Calculation only. Not medical advice; not a medical device.\",\n    \"inputs\": {\n      \"bilirubin\": {\n        \"unit\": \"mg/dl\",\n        \"value\": 4.0\n      },\n      \"creatinine\": {\n        \"unit\": \"mg/dl\",\n        \"value\": 1.9\n      },\n      \"inr\": 1.5\n    },\n    \"needs_unit\": [\n      {\n        \"analyte\": \"sodium\",\n        \"field\": \"sodium\",\n        \"matched\": \"na 130\",\n        \"suggested_unit\": \"mmol/L\",\n        \"value\": 130.0\n      }\n    ],\n    \"note\": \"Advisory extraction only. Values under 'needs_unit'/'unrecognized_units' were NOT added to 'inputs' because Caliper never assumes a unit. Confirm units, then call compute_score. This tool does not compute and does not diagnose.\",\n    \"provenance\": [\n      {\n        \"analyte\": \"creatinine\",\n        \"as\": \"quantity\",\n        \"field\": \"creatinine\",\n        \"matched\": \"creatinine 1.9 mg/dl\",\n        \"unit\": \"mg/dl\",\n        \"value\": 1.9\n      },\n      {\n        \"analyte\": \"bilirubin\",\n        \"as\": \"quantity\",\n        \"field\": \"bilirubin\",\n        \"matched\": \"bilirubin 4.0 mg/dl\",\n        \"unit\": \"mg/dl\",\n        \"value\": 4.0\n      },\n      {\n        \"as\": \"ratio\",\n        \"field\": \"inr\",\n        \"matched\": \"inr 1.5\",\n        \"value\": 1.5\n      }\n    ],\n    \"unrecognized_units\": []\n  },\n  \"id\": \"meld-na\",\n  \"inputs\": {\n    \"bilirubin\": {\n      \"unit\": \"mg/dl\",\n      \"value\": 4.0\n    },\n    \"creatinine\": {\n      \"unit\": \"mg/dl\",\n      \"value\": 1.9\n    },\n    \"inr\": 1.5,\n    \"sodium\": {\n      \"unit\": \"mmol/L\",\n      \"value\": 130\n    }\n  },\n  \"missing_required\": [],\n  \"name\": \"MELD-Na\",\n  \"next\": \"All required inputs present. Confirm them, then call compute_score with id + inputs.\",\n  \"off_contract_extracted\": [],\n  \"ready\": true,\n  \"satisfied\": [\n    \"creatinine\",\n    \"bilirubin\",\n    \"inr\",\n    \"sodium\"\n  ],\n  \"version\": \"OPTN-2016\"\n}",
+          "type": "text"
+        }
+      ],
+      "isError": false,
+      "structuredContent": {
+        "disclaimer": "Calculation only. Not medical advice; not a medical device.",
+        "extraction": {
+          "ambiguous": [],
+          "disclaimer": "Calculation only. Not medical advice; not a medical device.",
+          "inputs": {
+            "bilirubin": {
+              "unit": "mg/dl",
+              "value": 4.0
+            },
+            "creatinine": {
+              "unit": "mg/dl",
+              "value": 1.9
+            },
+            "inr": 1.5
+          },
+          "needs_unit": [
+            {
+              "analyte": "sodium",
+              "field": "sodium",
+              "matched": "na 130",
+              "suggested_unit": "mmol/L",
+              "value": 130.0
+            }
+          ],
+          "note": "Advisory extraction only. Values under 'needs_unit'/'unrecognized_units' were NOT added to 'inputs' because Caliper never assumes a unit. Confirm units, then call compute_score. This tool does not compute and does not diagnose.",
+          "provenance": [
+            {
+              "analyte": "creatinine",
+              "as": "quantity",
+              "field": "creatinine",
+              "matched": "creatinine 1.9 mg/dl",
+              "unit": "mg/dl",
+              "value": 1.9
+            },
+            {
+              "analyte": "bilirubin",
+              "as": "quantity",
+              "field": "bilirubin",
+              "matched": "bilirubin 4.0 mg/dl",
+              "unit": "mg/dl",
+              "value": 4.0
+            },
+            {
+              "as": "ratio",
+              "field": "inr",
+              "matched": "inr 1.5",
+              "value": 1.5
+            }
+          ],
+          "unrecognized_units": []
+        },
+        "id": "meld-na",
+        "inputs": {
+          "bilirubin": {
+            "unit": "mg/dl",
+            "value": 4.0
+          },
+          "creatinine": {
+            "unit": "mg/dl",
+            "value": 1.9
+          },
+          "inr": 1.5,
+          "sodium": {
+            "unit": "mmol/L",
+            "value": 130
+          }
+        },
+        "missing_required": [],
+        "name": "MELD-Na",
+        "next": "All required inputs present. Confirm them, then call compute_score with id + inputs.",
+        "off_contract_extracted": [],
+        "ready": true,
+        "satisfied": [
+          "creatinine",
+          "bilirubin",
+          "inr",
+          "sodium"
+        ],
+        "version": "OPTN-2016"
+      }
+    }
+  }
+}

@@ -4,6 +4,43 @@ All notable changes to Caliper are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-06-01
+
+### Added
+- **Five pediatric / weight-band scores** (registry now 25 across 11 domains):
+  - `schwartz-egfr` (bedside Schwartz pediatric eGFR, Schwartz 2009) — renal.
+  - `apgar` (Apgar 1953) — neonatology.
+  - `westley-croup` (Westley 1978) — croup severity, pulmonary.
+  - `pews` (Brighton Pediatric Early Warning Score, Monaghan 2005) — pediatrics.
+  - `apls-weight` (APLS 2011 / Luscombe & Owens 2007 age-based weight estimate) — pediatrics.
+- New `height` analyte in the unit table (canonical cm; cm/m/mm/in/ft), required by
+  `schwartz-egfr`. `solve_for` bounds extended for height.
+- **Hardened text ingestion** for lab-dump / tabular input. `extract_inputs` now reads a unit
+  stated *before* the value in a parenthetical (the lab-header form `Sodium (mmol/L): 130`),
+  scans across newlines and commas (multi-line lab dumps), and still ignores trailing numeric
+  reference ranges (`130 mmol/L (135-145)`). It continues to never fabricate a unit. New
+  `height`/`length` concept added to the scanner lexicon.
+
+### Fixed
+- Ingestion number scanner no longer swallows a sentence-ending/abbreviation period as a
+  decimal point (`Na 130. No diabetes` previously parsed `130.` and grabbed `No` as a unit,
+  mis-filing sodium under `unrecognized_units`; it now correctly lands in `needs_unit`). A `.`
+  is treated as a decimal point only when a digit follows.
+- Added the two ingestion example files (`examples/extract_inputs.lab-note.json`,
+  `examples/prepare_score.meld-na.json`) that the examples README already referenced but were
+  missing.
+
+### Verified
+- Coefficient audit extended to the 5 new scores ([`docs/COEFFICIENT_AUDIT.md`](docs/COEFFICIENT_AUDIT.md)):
+  25/25 clean. PEWS records a variant caveat (institutional PEWS grids and age-banded vital
+  thresholds vary; Caliper pins the original Brighton 2005 three-component grid), cf. the MEWS note.
+
+### Notes
+- **PDF ingestion is intentionally out of scope inside Caliper.** Document → text (incl. OCR) is
+  the host's responsibility; Caliper ingests the resulting text and stays dependency-light
+  (serde only) with its trust boundary intact. The roadmap in the README has been refreshed to
+  reflect this and the shipped ingestion/pediatric work.
+
 ## [0.2.0] - 2026-05-31
 
 ### Added

@@ -1,0 +1,8 @@
+{
+  "inputs": {
+    "age": { "value": 4, "unit": "years" }
+  },
+  "expected": 16,
+  "tolerance": 0,
+  "source": "APLS 2011 age-based formula, 1-5y band: weight = (2 x 4) + 8 = 16 kg."
+}

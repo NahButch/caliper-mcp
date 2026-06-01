@@ -1,0 +1,84 @@
+{
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 2,
+    "method": "tools/call",
+    "params": {
+      "name": "extract_inputs",
+      "arguments": {
+        "text": "75M with cirrhosis. Creatinine 1.9 mg/dL, bilirubin 4.0 mg/dL, INR 1.5. Na 130. No diabetes."
+      }
+    }
+  },
+  "response": {
+    "id": 2,
+    "jsonrpc": "2.0",
+    "result": {
+      "content": [
+        {
+          "text": "{\n  \"ambiguous\": [],\n  \"disclaimer\": \"Calculation only. Not medical advice; not a medical device.\",\n  \"inputs\": {\n    \"bilirubin\": {\n      \"unit\": \"mg/dl\",\n      \"value\": 4.0\n    },\n    \"creatinine\": {\n      \"unit\": \"mg/dl\",\n      \"value\": 1.9\n    },\n    \"diabetes\": false,\n    \"inr\": 1.5\n  },\n  \"needs_unit\": [\n    {\n      \"analyte\": \"sodium\",\n      \"field\": \"sodium\",\n      \"matched\": \"na 130\",\n      \"suggested_unit\": \"mmol/L\",\n      \"value\": 130.0\n    }\n  ],\n  \"note\": \"Advisory extraction only. Values under 'needs_unit'/'unrecognized_units' were NOT added to 'inputs' because Caliper never assumes a unit. Confirm units, then call compute_score. This tool does not compute and does not diagnose.\",\n  \"provenance\": [\n    {\n      \"analyte\": \"creatinine\",\n      \"as\": \"quantity\",\n      \"field\": \"creatinine\",\n      \"matched\": \"creatinine 1.9 mg/dl\",\n      \"unit\": \"mg/dl\",\n      \"value\": 1.9\n    },\n    {\n      \"analyte\": \"bilirubin\",\n      \"as\": \"quantity\",\n      \"field\": \"bilirubin\",\n      \"matched\": \"bilirubin 4.0 mg/dl\",\n      \"unit\": \"mg/dl\",\n      \"value\": 4.0\n    },\n    {\n      \"as\": \"ratio\",\n      \"field\": \"inr\",\n      \"matched\": \"inr 1.5\",\n      \"value\": 1.5\n    },\n    {\n      \"as\": \"flag\",\n      \"field\": \"diabetes\",\n      \"matched\": \"diabetes\",\n      \"negated\": true,\n      \"value\": false\n    }\n  ],\n  \"unrecognized_units\": []\n}",
+          "type": "text"
+        }
+      ],
+      "isError": false,
+      "structuredContent": {
+        "ambiguous": [],
+        "disclaimer": "Calculation only. Not medical advice; not a medical device.",
+        "inputs": {
+          "bilirubin": {
+            "unit": "mg/dl",
+            "value": 4.0
+          },
+          "creatinine": {
+            "unit": "mg/dl",
+            "value": 1.9
+          },
+          "diabetes": false,
+          "inr": 1.5
+        },
+        "needs_unit": [
+          {
+            "analyte": "sodium",
+            "field": "sodium",
+            "matched": "na 130",
+            "suggested_unit": "mmol/L",
+            "value": 130.0
+          }
+        ],
+        "note": "Advisory extraction only. Values under 'needs_unit'/'unrecognized_units' were NOT added to 'inputs' because Caliper never assumes a unit. Confirm units, then call compute_score. This tool does not compute and does not diagnose.",
+        "provenance": [
+          {
+            "analyte": "creatinine",
+            "as": "quantity",
+            "field": "creatinine",
+            "matched": "creatinine 1.9 mg/dl",
+            "unit": "mg/dl",
+            "value": 1.9
+          },
+          {
+            "analyte": "bilirubin",
+            "as": "quantity",
+            "field": "bilirubin",
+            "matched": "bilirubin 4.0 mg/dl",
+            "unit": "mg/dl",
+            "value": 4.0
+          },
+          {
+            "as": "ratio",
+            "field": "inr",
+            "matched": "inr 1.5",
+            "value": 1.5
+          },
+          {
+            "as": "flag",
+            "field": "diabetes",
+            "matched": "diabetes",
+            "negated": true,
+            "value": false
+          }
+        ],
+        "unrecognized_units": []
+      }
+    }
+  }
+}

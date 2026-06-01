@@ -1,0 +1,9 @@
+{
+  "inputs": {
+    "height": { "value": 120, "unit": "cm" },
+    "creatinine": { "value": 0.5, "unit": "mg/dL" }
+  },
+  "expected": 99.12,
+  "tolerance": 0.01,
+  "source": "Schwartz et al. (JASN 2009) bedside equation: eGFR = 0.413 * 120 cm / 0.5 mg/dL = 99.12 mL/min/1.73m^2 (cf. MDCalc Schwartz)."
+}

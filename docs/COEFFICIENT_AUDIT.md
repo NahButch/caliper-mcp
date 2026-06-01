@@ -120,6 +120,54 @@ input of exactly 40 bpm.
 
 ---
 
+## v0.3.0 audit (2026-06-01) — the 5 pediatric / weight-band scores
+
+**Scope:** every point weight / band boundary and the formula constants in the new scores; the
+worked example per score recomputed.
+**Method:** implementations read line-by-line and compared to the cited primary definitions and
+authoritative reproductions (MDCalc etc.); the bedside Schwartz constant and the APLS bands
+checked against their published forms.
+**Result: 5 / 5 CLEAN. No code fixes required.**
+
+| id | version | verification | worked example (recomputed) |
+|----|---------|--------------|------------------------------|
+| schwartz-egfr | Schwartz-2009-bedside | reproductions + consistency | height 120 cm, Scr 0.5 mg/dL → **99.12** mL/min/1.73m² |
+| apgar | Apgar-1953 | reproductions + consistency | A2 P2 G1 A2 R2 → **9** |
+| westley-croup | Westley-1978 | reproductions + consistency | max: consc 5 + cyanosis 5 + stridor 2 + air entry 2 + retractions 3 → **17** |
+| pews | Brighton-2005 | reproductions + consistency (see note) | behaviour 2 + CV 1 + resp 2 + modifier 2 → **7** |
+| apls-weight | APLS-2011 | reproductions + consistency | age 4 y → (2 × 4) + 8 = **16** kg |
+
+### Key findings
+
+- **Bedside Schwartz (2009).** Constant **0.413**, eGFR = 0.413 × height(cm) / Scr(mg/dL),
+  expressed in mL/min/1.73m². The 0.413 coefficient assumes an IDMS-traceable (enzymatic)
+  creatinine; documented in the input notes. Height is unit-converted (cm canonical).
+- **APGAR.** Five signs (appearance, pulse, grimace, activity, respiration), each 0/1/2; total
+  0–10; bands 7–10 / 4–6 / 0–3. Caliper takes the per-sign points directly (the assessor maps
+  the clinical sign to 0/1/2 per Apgar's original definition, restated per field).
+- **Westley croup.** Unevenly weighted levels confirmed: consciousness {normal 0, disoriented
+  5}; cyanosis {none 0, with agitation 4, at rest 5}; stridor {0,1,2}; air entry {0,1,2};
+  retractions {0,1,2,3}; max **17**. Bands ≤2 / 3–7 / 8–11 / ≥12.
+- **APLS weight.** Three bands: <1 y → (0.5 × months) + 4; 1–5 y → (2 × age) + 8; 6–12 y →
+  (3 × age) + 7. Validity capped at 0–12 years (`OutOfRange` beyond). Continuous at the 1-year
+  boundary (both give 10 kg); the 6-year step is inherent to the APLS formula. This is an
+  *estimate of an unmeasured weight*, returned descriptively — never a dosing directive.
+
+### PEWS variant note (read this)
+
+PEWS has **many institutional variants** — different parameter grids and, critically,
+**age-banded vital-sign thresholds** ("heart rate >X above normal for age"). Caliper implements
+the original **Brighton PEWS (Monaghan 2005)** three-component structure (behaviour /
+cardiovascular / respiratory, each 0–3) plus the **+2 modifier** (quarter-hourly nebulisers or
+persistent post-operative vomiting), max **11**, as the `Brighton-2005` version string
+promises. It takes the **assessed component level** directly rather than re-deriving levels from
+raw age-banded vitals — that derivation is exactly the part that varies between sites, and
+auto-grading it would silently pin one local chart. Escalation thresholds also vary by site, so
+the interpretation band is descriptive only. If you need a byte-level match to a specific
+institutional PEWS chart, confirm its component grid first.
+
+---
+
 ## Primary sources
 
 v0.1.0: OPTN/UNOS 2016 sodium policy & Kim NEJM 2008 (MELD-Na); Kim *Gastroenterology* 2021 &
@@ -132,6 +180,11 @@ Sterling *Hepatology* 2006 (FIB-4).
 v0.2.0: Lim *Thorax* 2003 (CRB-65); Kline *J Thromb Haemost* 2004 (PERC); Subbe *QJM* 2001
 (MEWS); Bone *Chest* 1992 ACCP/SCCM (SIRS); Blatchford *Lancet* 2000 (Glasgow-Blatchford);
 Barbar *J Thromb Haemost* 2010 (Padua).
+
+v0.3.0: Schwartz *J Am Soc Nephrol* 2009 (bedside pediatric eGFR); Apgar *Curr Res Anesth Analg*
+1953 (APGAR); Westley *Am J Dis Child* 1978 (croup score); Monaghan *Paediatr Nurs* 2005
+(Brighton PEWS); *Advanced Paediatric Life Support* 5th ed. 2011 & Luscombe & Owens *Arch Dis
+Child* 2007 (age-based weight estimation).
 
 ## Notes for future maintainers
 

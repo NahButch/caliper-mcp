@@ -98,6 +98,11 @@ const CONCEPTS: &[Concept] = &[
         triggers: &["age"],
     },
     Concept {
+        field: "height",
+        target: Target::Quantity("height"),
+        triggers: &["height", "length", "ht"],
+    },
+    Concept {
         field: "pao2",
         target: Target::Quantity("pao2"),
         triggers: &["pao2", "pa o2", "arterial po2"],
@@ -439,13 +444,34 @@ fn scan_sex(lower: &str, pos: usize) -> Option<(&'static str, usize, usize)> {
 fn scan_number_after(lower: &str, pos: usize) -> Option<ScannedNumber> {
     let b = lower.as_bytes();
     let mut i = pos;
+    // A unit stated in a parenthetical *before* the value (the lab-table header form
+    // "sodium (mmol/L): 130"); used only as a fallback if no unit trails the number.
+    let mut paren_unit: Option<String> = None;
     // Skip separators between the label and the number, but bail if it's clearly far away.
+    // Newlines and commas are included so multi-line / tabular lab dumps scan cleanly.
     let mut skipped = 0;
-    while i < b.len() && skipped < 12 {
+    while i < b.len() && skipped < 16 {
         let ch = b[i];
-        if ch == b' ' || ch == b':' || ch == b'=' || ch == b'\t' || ch == b'~' || ch == b'(' {
+        if matches!(ch, b' ' | b':' | b'=' | b'\t' | b'~' | b'\n' | b'\r' | b',') {
             i += 1;
             skipped += 1;
+        } else if ch == b'(' {
+            // Capture a parenthetical unit if it looks like one (contains a letter);
+            // a numeric reference range like "(135-145)" is deliberately ignored.
+            if let Some(rel) = lower[i..].find(')') {
+                let inner = lower[i + 1..i + rel].trim();
+                if paren_unit.is_none()
+                    && !inner.is_empty()
+                    && inner.chars().any(|c| c.is_ascii_alphabetic())
+                {
+                    paren_unit = Some(inner.to_string());
+                }
+                i += rel + 1;
+                skipped += 2;
+            } else {
+                i += 1;
+                skipped += 1;
+            }
         } else if lower[i..].starts_with("is ") || lower[i..].starts_with("of ") {
             // skip a connective word like "creatinine is 1.9" / "INR of 1.5"
             i += 3;
@@ -466,7 +492,9 @@ fn scan_number_after(lower: &str, pos: usize) -> Option<ScannedNumber> {
         if ch.is_ascii_digit() {
             saw_digit = true;
             i += 1;
-        } else if ch == b'.' && !saw_dot {
+        } else if ch == b'.' && !saw_dot && b.get(i + 1).is_some_and(|c| c.is_ascii_digit()) {
+            // A '.' is a decimal point only when a digit follows; a sentence-ending or
+            // abbreviation period (e.g. "Na 130. No diabetes") must not be swallowed.
             saw_dot = true;
             i += 1;
         } else {
@@ -501,7 +529,8 @@ fn scan_number_after(lower: &str, pos: usize) -> Option<ScannedNumber> {
     }
     let raw_unit = lower[unit_start..j].trim_matches(|c: char| c == '.' || c == '-');
     let (unit, value_end) = if raw_unit.is_empty() || raw_unit.chars().all(|c| c.is_ascii_digit()) {
-        (None, i)
+        // No unit trails the number; fall back to a unit stated before it (lab-header form).
+        (paren_unit, i)
     } else {
         (Some(raw_unit.to_string()), j)
     };
@@ -590,6 +619,64 @@ mod tests {
         let cr = &obj(&r, "inputs")["creatinine"];
         assert_eq!(cr["value"], 150.0);
         assert_eq!(cr["unit"], "umol/l");
+    }
+
+    #[test]
+    fn parenthetical_unit_before_value() {
+        // Lab-table header form: the unit precedes the value in parentheses.
+        let r = extract_inputs("Sodium (mmol/L): 130");
+        let na = &obj(&r, "inputs")["sodium"];
+        assert_eq!(na["value"], 130.0);
+        assert_eq!(na["unit"], "mmol/l");
+    }
+
+    #[test]
+    fn numeric_reference_range_is_not_a_unit() {
+        // A bracketed numeric reference range before the value must NOT be read as a unit;
+        // with no real unit present the value stays in needs_unit.
+        let r = extract_inputs("Sodium (135-145) 130");
+        assert!(!obj(&r, "inputs").contains_key("sodium"));
+        assert_eq!(arr(&r, "needs_unit")[0]["field"], "sodium");
+    }
+
+    #[test]
+    fn trailing_reference_range_does_not_corrupt_value() {
+        // Reference range after the value+unit must be ignored.
+        let r = extract_inputs("Sodium 130 mmol/L (135-145)");
+        let na = &obj(&r, "inputs")["sodium"];
+        assert_eq!(na["value"], 130.0);
+        assert_eq!(na["unit"], "mmol/l");
+    }
+
+    #[test]
+    fn multiline_lab_dump() {
+        let dump = "Creatinine: 1.9 mg/dL\nBilirubin 4.0 mg/dL\nINR 1.5\nSodium 130 mmol/L";
+        let r = extract_inputs(dump);
+        let inputs = obj(&r, "inputs");
+        assert_eq!(inputs["creatinine"]["value"], 1.9);
+        assert_eq!(inputs["bilirubin"]["value"], 4.0);
+        assert_eq!(inputs["inr"], 1.5);
+        assert_eq!(inputs["sodium"]["value"], 130.0);
+    }
+
+    #[test]
+    fn sentence_period_not_eaten_as_decimal() {
+        // "Na 130. No diabetes" — the period ends the sentence; it must not become a decimal
+        // point that then grabs "No" as a unit. Value has no stated unit -> needs_unit.
+        let r = extract_inputs("Na 130. No diabetes");
+        assert!(!obj(&r, "inputs").contains_key("sodium"));
+        assert!(arr(&r, "unrecognized_units").is_empty());
+        let nu = arr(&r, "needs_unit");
+        assert_eq!(nu[0]["field"], "sodium");
+        assert_eq!(nu[0]["value"], 130.0);
+    }
+
+    #[test]
+    fn height_extracted() {
+        let r = extract_inputs("height 120 cm");
+        let h = &obj(&r, "inputs")["height"];
+        assert_eq!(h["value"], 120.0);
+        assert_eq!(h["unit"], "cm");
     }
 
     #[test]

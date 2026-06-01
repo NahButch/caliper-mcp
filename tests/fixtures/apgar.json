@@ -1,0 +1,12 @@
+{
+  "inputs": {
+    "appearance": 2,
+    "pulse": 2,
+    "grimace": 1,
+    "activity": 2,
+    "respiration": 2
+  },
+  "expected": 9,
+  "tolerance": 0,
+  "source": "Apgar (Curr Res Anesth Analg 1953). Appearance 2 + Pulse 2 + Grimace 1 + Activity 2 + Respiration 2 = 9 (vigorous newborn with acrocyanosis)."
+}

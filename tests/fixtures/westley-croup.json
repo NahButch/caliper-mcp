@@ -1,0 +1,12 @@
+{
+  "inputs": {
+    "consciousness": "disoriented",
+    "cyanosis": "at_rest",
+    "stridor": "at_rest",
+    "air_entry": "markedly_decreased",
+    "retractions": "severe"
+  },
+  "expected": 17,
+  "tolerance": 0,
+  "source": "Westley et al. (Am J Dis Child 1978). Maximal: consciousness 5 + cyanosis 5 + stridor 2 + air entry 2 + retractions 3 = 17 (cf. MDCalc Westley Croup Score)."
+}

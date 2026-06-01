@@ -344,6 +344,7 @@ fn default_bounds(analyte: &str) -> (f64, f64) {
         "sodium" => (90.0, 170.0),
         "albumin" => (0.5, 6.0),
         "age" => (0.0, 120.0),
+        "height" => (30.0, 250.0),
         "weight" => (1.0, 400.0),
         "platelets" => (1.0, 1000.0),
         "aminotransferase" => (1.0, 5000.0),

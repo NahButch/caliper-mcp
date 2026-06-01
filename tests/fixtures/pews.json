@@ -1,0 +1,11 @@
+{
+  "inputs": {
+    "behaviour": 2,
+    "cardiovascular": 1,
+    "respiratory": 2,
+    "nebuliser_or_postop_vomiting": true
+  },
+  "expected": 7,
+  "tolerance": 0,
+  "source": "Brighton PEWS (Monaghan, Paediatr Nurs 2005). Behaviour 2 + cardiovascular 1 + respiratory 2 + nebuliser/post-op vomiting modifier 2 = 7."
+}

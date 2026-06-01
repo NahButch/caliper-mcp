@@ -101,7 +101,25 @@ Ranks candidate scores for a `context` (`{ domain?, question?, available_inputs?
 Returns `{ candidates: [ {id, name, domain, why, needed_inputs, match_score} ], note }`.
 **Does not compute.**
 
+### `extract_inputs(text)`
+Deterministic scanner that turns free text / lab-dump text into candidate unit-typed inputs.
+Returns `{ inputs, needs_unit, unrecognized_units, ambiguous, provenance, note, disclaimer }`.
+`inputs` holds only ready-to-compute values; a value whose unit was not stated goes to
+`needs_unit` (with a suggested unit to confirm), an unrecognized unit to `unrecognized_units`.
+**Never fabricates a unit. Does not compute.** A parenthetical unit before the value
+(`Sodium (mmol/L): 130`) is read; a trailing numeric reference range (`130 mmol/L (135-145)`)
+is ignored.
+
+### `prepare_score(id, text?, inputs?)`
+Assembles inputs from `text` (via `extract_inputs`) and/or an explicit `inputs` object (explicit
+overrides extracted), then reports readiness against the score's contract. Returns
+`{ id, name, version, ready, inputs, satisfied, missing_required, off_contract_extracted, next,
+extraction?, disclaimer }`. **Does not compute** — the `compute_score` call (and any unit
+confirmation) stays with the caller.
+
 ## Score registry
+
+25 scores across 11 domains:
 
 | id | name | version | domain | unit |
 |----|------|---------|--------|------|
@@ -109,15 +127,26 @@ Returns `{ candidates: [ {id, name, domain, why, needed_inputs, match_score} ], 
 | meld-3 | MELD 3.0 | OPTN-2023 | hepatology | points |
 | ckd-epi-2021 | eGFR (CKD-EPI creatinine, 2021 race-free) | CKD-EPI-2021 | renal | mL/min/1.73m^2 |
 | cockcroft-gault | Cockcroft-Gault creatinine clearance | Cockcroft-Gault-1976 | renal | mL/min |
+| schwartz-egfr | Pediatric eGFR (bedside Schwartz, 2009) | Schwartz-2009-bedside | renal | mL/min/1.73m^2 |
 | cha2ds2-vasc | CHA2DS2-VASc | Lip-2010 | cardiology | points |
 | has-bled | HAS-BLED | Pisters-2010 | cardiology | points |
 | curb-65 | CURB-65 | Lim-2003 | pulmonary | points |
+| crb-65 | CRB-65 | Lim-2003 | pulmonary | points |
 | wells-pe | Wells Criteria (PE) | Wells-2000 | pulmonary | points |
+| perc | PERC Rule | Kline-2004 | pulmonary | positive criteria |
+| westley-croup | Westley Croup Score | Westley-1978 | pulmonary | points |
 | news2 | NEWS2 | RCP-2017 | acute | points |
+| mews | MEWS | Subbe-2001 | acute | points |
 | qsofa | qSOFA | Sepsis-3-2016 | icu | points |
+| sirs | SIRS criteria | ACCP-SCCM-1992 | icu | criteria met |
 | sofa | SOFA | 1996 | icu | points |
 | gcs | Glasgow Coma Scale | 1974 | neuro | points |
 | child-pugh | Child-Pugh | 1973 | hepatology | points |
 | fib-4 | FIB-4 index | Sterling-2006 | hepatology | index |
+| glasgow-blatchford | Glasgow-Blatchford Bleeding Score | Blatchford-2000 | gastroenterology | points |
+| padua-vte | Padua Prediction Score (VTE) | Barbar-2010 | hematology | points |
+| apgar | APGAR Score | Apgar-1953 | neonatology | points |
+| pews | Pediatric Early Warning Score (Brighton) | Brighton-2005 | pediatrics | points |
+| apls-weight | Pediatric weight estimate (APLS, age-based) | APLS-2011 | pediatrics | kg |
 
 Call `score_inputs(<id>)` for each score's exact field list, units, and clamps.
