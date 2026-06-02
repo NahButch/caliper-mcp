@@ -40,7 +40,7 @@ MELD of 26 or an eGFR of 78 into a decision is the clinician's job, not the tool
 Free-text and lab-dump **text** ingestion is supported as an explicitly *advisory* step
 (`extract_inputs` / `prepare_score`): the scanner proposes unit-typed candidates with
 provenance and never fabricates a unit. Turning a **PDF** into text is the host's job — point
-your document/OCR layer at Caliper's text input and the trust boundary stays pure (no document
+a document/OCR layer at Caliper's text input and the trust boundary stays pure (no document
 parsers, no new dependencies). Anything resembling a recommendation remains out of scope (see
 [Roadmap](#roadmap)).
 
@@ -141,7 +141,7 @@ Build the release binary, then add Caliper to
 }
 ```
 
-Use the absolute path to your built `caliper-mcp.exe`, escape backslashes, and restart Claude
+Use the absolute path to the built `caliper-mcp.exe`, escape backslashes, and restart Claude
 Desktop. Caliper will appear as a tool provider; try *"list the renal scores"* or *"compute
 MELD-Na for creatinine 1.9 mg/dL, bilirubin 4 mg/dL, INR 1.5, sodium 130 mmol/L."*
 
@@ -159,7 +159,7 @@ MELD-Na for creatinine 1.9 mg/dL, bilirubin 4 mg/dL, INR 1.5, sodium 130 mmol/L.
 
 - **PDF/image parsing inside Caliper.** Document → text (including OCR) is the host's job;
   Caliper ingests the resulting text so it can stay dependency-light (serde only) and keep its
-  trust boundary pure. Point your PDF/OCR layer at `extract_inputs`.
+  trust boundary pure. Point a PDF/OCR layer at `extract_inputs`.
 - Anything beyond `score + interpretation band + citation` — no treatment, dosing, or guideline
   directives. (`apls-weight` estimates an unmeasured body weight; it is a calculation, not a
   dosing instruction.)

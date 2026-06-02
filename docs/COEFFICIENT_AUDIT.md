@@ -110,7 +110,7 @@ that variant. The implemented grid — temperature `<35 → 2` and `≥38.5 → 
 temperature cell scores 3) and AVPU `Alert 0 / Voice 1 / Pain 2 / Unresponsive 3` — is the
 canonical 3-2-1-0-1-2-3 Subbe grid and the dominant academic reproduction; the audit confirmed
 this against multiple secondary sources and the grid's internal structure (the MDApp variant
-breaks both the symmetric temperature column and the monotone AVPU ladder). If you need a
+breaks both the symmetric temperature column and the monotone AVPU ladder). For a
 byte-level match to a specific institutional MEWS chart, confirm its temperature and AVPU rows
 first. The worked example (=8) is the same under either variant.
 
@@ -163,7 +163,7 @@ persistent post-operative vomiting), max **11**, as the `Brighton-2005` version 
 promises. It takes the **assessed component level** directly rather than re-deriving levels from
 raw age-banded vitals — that derivation is exactly the part that varies between sites, and
 auto-grading it would silently pin one local chart. Escalation thresholds also vary by site, so
-the interpretation band is descriptive only. If you need a byte-level match to a specific
+the interpretation band is descriptive only. For a byte-level match to a specific
 institutional PEWS chart, confirm its component grid first.
 
 ---
